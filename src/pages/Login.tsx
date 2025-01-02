@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Zap } from 'lucide-react';
+import { Zap, AlertCircle } from 'lucide-react';
 import { useAuthStore } from '../store/useAuthStore';
+import { parseNostrKey } from '../utils/nostr';
 
 export const Login: React.FC = () => {
   const navigate = useNavigate();
   const login = useAuthStore((state) => state.login);
+  const [manualKey, setManualKey] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   const handleNostrLogin = async () => {
     try {
@@ -15,6 +18,23 @@ export const Login: React.FC = () => {
       navigate('/dashboard');
     } catch (error) {
       console.error('Login failed:', error);
+      setError('Nostr login failed. Please try again or use manual login.');
+    }
+  };
+
+  const handleManualLogin = async () => {
+    const pubkey = parseNostrKey(manualKey.trim());
+    if (!pubkey) {
+      setError('Invalid public key format. Please enter a valid npub or hex public key.');
+      return;
+    }
+
+    try {
+      await login(pubkey);
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Manual login failed:', error);
+      setError('Login failed. Please try again.');
     }
   };
 
@@ -60,10 +80,25 @@ export const Login: React.FC = () => {
             </label>
             <input
               type="text"
+              value={manualKey}
+              onChange={(e) => {
+                setManualKey(e.target.value);
+                setError(null);
+              }}
               placeholder="npub1... or hex public key"
               className="input"
             />
-            <button className="btn btn-primary w-full">
+            {error && (
+              <div className="flex items-center gap-2 text-red-400 text-sm mt-2">
+                <AlertCircle className="w-4 h-4" />
+                {error}
+              </div>
+            )}
+            <button 
+              onClick={handleManualLogin}
+              className="btn btn-primary w-full"
+              disabled={!manualKey.trim()}
+            >
               Continue
             </button>
           </div>
