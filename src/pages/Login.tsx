@@ -39,10 +39,10 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-900 flex items-start justify-center pt-16 p-4">
       <div className="max-w-md w-full">
-        <div className="text-center mb-8">
-          <div className="inline-block p-3 bg-primary-500/20 rounded-full mb-4">
+        <div className="text-center mb-6">
+          <div className="inline-block p-3 bg-primary-500/20 rounded-full mb-3">
             <Zap className="w-12 h-12 text-primary-500" />
           </div>
           <h1 className="text-3xl font-bold text-white mb-2">Azzamo Premium dashboard</h1>
