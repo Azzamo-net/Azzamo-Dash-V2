@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Zap, AlertCircle } from 'lucide-react';
 import { shortenInvoice } from '../utils/format';
 import { formatTimeRemaining } from '../utils/timeFormat';
+import { Toast } from './Toast';
 
 interface PaymentInvoiceProps {
   invoice: string;
@@ -20,7 +21,13 @@ export const PaymentInvoice: React.FC<PaymentInvoiceProps> = ({
   timeRemaining,
   onNewInvoice
 }) => {
+  const [showToast, setShowToast] = useState(false);
   const shortInvoice = shortenInvoice(invoice);
+
+  const handleCopyInvoice = async () => {
+    await navigator.clipboard.writeText(invoice);
+    setShowToast(true);
+  };
 
   if (isExpired) {
     return (
@@ -57,7 +64,7 @@ export const PaymentInvoice: React.FC<PaymentInvoiceProps> = ({
         <div className="bg-gray-900 p-3 rounded-lg flex items-center gap-2">
           <code className="font-mono text-sm text-gray-300">{shortInvoice}</code>
           <button 
-            onClick={() => navigator.clipboard.writeText(invoice)}
+            onClick={handleCopyInvoice}
             className="p-1 hover:text-primary-500 ml-auto"
             title="Copy full invoice"
           >
@@ -86,6 +93,12 @@ export const PaymentInvoice: React.FC<PaymentInvoiceProps> = ({
       <div className="text-center text-gray-400">
         {loading ? 'Processing payment...' : 'Waiting for payment...'}
       </div>
+
+      <Toast 
+        message="Invoice copied to clipboard!"
+        isVisible={showToast}
+        onClose={() => setShowToast(false)}
+      />
     </div>
   );
 };

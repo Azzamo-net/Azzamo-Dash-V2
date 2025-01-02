@@ -1,7 +1,6 @@
 export const formatTimeBreakdown = (days: number) => {
   const months = Math.floor(days / 30);
   const remainingDays = days % 30;
-  const hours = 24;
 
   const parts = [];
   if (months > 0) {
@@ -10,7 +9,6 @@ export const formatTimeBreakdown = (days: number) => {
   if (remainingDays > 0) {
     parts.push(`${remainingDays} ${remainingDays === 1 ? 'day' : 'days'}`);
   }
-  parts.push(`${hours} hours`);
 
   return parts.join(', ');
 };
