@@ -33,7 +33,6 @@ export const Payment: React.FC = () => {
       // Check payment status after generating the invoice
       const paymentStatus = await checkPaymentStatus(payment_hash);
       if (paymentStatus.paid) {
-        // Handle successful payment if needed
         console.log('Payment is successful');
       } else {
         console.log('Payment is pending');
