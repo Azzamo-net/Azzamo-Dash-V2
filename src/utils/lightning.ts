@@ -34,3 +34,19 @@ export const generateInvoice = async (minutes: number) => {
     throw error;
   }
 };
+
+// Export the checkPaymentStatus function
+export const checkPaymentStatus = async (paymentHash: string) => {
+  const response = await fetch(`${env.lnbits.url}/api/v1/payments/${paymentHash}`, {
+    headers: {
+      'X-Api-Key': env.lnbits.apiKey,
+    },
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`Failed to check payment status: ${error}`);
+  }
+
+  return response.json();
+};
