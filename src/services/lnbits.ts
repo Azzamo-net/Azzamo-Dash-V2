@@ -50,7 +50,7 @@ export const createInvoice = async (params: CreateInvoiceParams): Promise<Create
 
   console.log('Creating invoice with params:', requestBody); // Log request parameters
 
-  const response = await fetch(`${env.lnbits.url}/api/v1/invoices`, {
+  const response = await fetch(`${env.lnbits.url}/api/v1/payments`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
