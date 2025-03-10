@@ -36,7 +36,7 @@ interface PaymentStatus {
 }
 
 export const createInvoice = async (params: CreateInvoiceParams): Promise<CreateInvoiceResponse> => {
-  const response = await fetch(`${env.lnbits.url}/api/v1/payments`, {
+  const response = await fetch(`${env.lnbits.url}/api/v1/invoices`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
