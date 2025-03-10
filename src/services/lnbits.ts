@@ -39,6 +39,7 @@ export const createInvoice = async (params: CreateInvoiceParams): Promise<Create
   const requestBody = {
     out: false,
     amount: params.amount,
+    unit: "sat",
     memo: params.memo,
     webhook: params.webhook,
     extra: params.extra,
