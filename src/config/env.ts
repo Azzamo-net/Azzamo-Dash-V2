@@ -13,6 +13,7 @@ interface EnvConfig {
     url: string;
     apiKey: string;
     webhook: string;
+    walletId: string;
   };
 }
 
@@ -31,5 +32,6 @@ export const env: EnvConfig = {
     url: import.meta.env.VITE_LNBITS_URL,
     apiKey: import.meta.env.VITE_LNBITS_API_KEY,
     webhook: import.meta.env.VITE_LNBITS_WEBHOOK,
+    walletId: import.meta.env.VITE_LNBITS_WALLET_ID,
   },
 };
