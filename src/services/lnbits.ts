@@ -36,28 +36,34 @@ interface PaymentStatus {
 }
 
 export const createInvoice = async (params: CreateInvoiceParams): Promise<CreateInvoiceResponse> => {
+  const requestBody = {
+    out: false,
+    amount: params.amount,
+    memo: params.memo,
+    webhook: params.webhook,
+    extra: params.extra,
+    expiry: params.expiry || 3600, // Default 1 hour expiry
+  };
+
+  console.log('Creating invoice with params:', requestBody); // Log request parameters
+
   const response = await fetch(`${env.lnbits.url}/api/v1/invoices`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'X-Api-Key': env.lnbits.apiKey,
     },
-    body: JSON.stringify({
-      out: false,
-      amount: params.amount,
-      memo: params.memo,
-      webhook: params.webhook,
-      extra: params.extra,
-      expiry: params.expiry || 3600, // Default 1 hour expiry
-    }),
+    body: JSON.stringify(requestBody),
   });
 
+  const responseBody = await response.json(); // Capture the response body
+  console.log('Response from createInvoice:', responseBody); // Log the response
+
   if (!response.ok) {
-    const error = await response.text();
-    throw new Error(`Failed to create invoice: ${error}`);
+    throw new Error(`Failed to create invoice: ${responseBody.error || responseBody}`);
   }
 
-  return response.json();
+  return responseBody;
 };
 
 export const checkPaymentStatus = async (paymentHash: string): Promise<PaymentStatus> => {
