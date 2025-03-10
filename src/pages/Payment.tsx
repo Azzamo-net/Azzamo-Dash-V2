@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Clock } from 'lucide-react';
-import { generateInvoice } from '../utils/lightning';
+import { generateInvoice, checkPaymentStatus } from '../utils/lightning';
 import { TimeSlider } from '../components/TimeSlider';
 import { PaymentInvoice } from '../components/PaymentInvoice';
 import { PriceDisplay } from '../components/PriceDisplay';
@@ -29,6 +29,15 @@ export const Payment: React.FC = () => {
       setInvoice(payment_request);
       setPaymentHash(payment_hash);
       setExpiryTimestamp(expiry);
+
+      // Check payment status after generating the invoice
+      const paymentStatus = await checkPaymentStatus(payment_hash);
+      if (paymentStatus.paid) {
+        // Handle successful payment if needed
+        console.log('Payment is successful');
+      } else {
+        console.log('Payment is pending');
+      }
     } catch (error) {
       console.error('Payment failed:', error);
     } finally {
