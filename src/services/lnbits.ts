@@ -6,6 +6,7 @@ interface CreateInvoiceParams {
   webhook: string;
   extra?: Record<string, any>;
   expiry?: number;
+  wallet_id?: string;
 }
 
 interface CreateInvoiceResponse {
@@ -44,6 +45,7 @@ export const createInvoice = async (params: CreateInvoiceParams): Promise<Create
     webhook: params.webhook,
     extra: params.extra,
     expiry: params.expiry || 3600, // Default 1 hour expiry
+    wallet_id: params.wallet_id || env.lnbits.walletId, // Use wallet_id from params or environment
   };
 
   console.log('Creating invoice with params:', requestBody); // Log request parameters
