@@ -21,7 +21,10 @@ export const generateInvoice = async (minutes: number) => {
         time_added: minutes,
         days,
         amount_sats: finalPrice
-      }
+      },
+      expiry: 3600,
+      unit: 'sat',
+      internal: false
     });
 
     return {
