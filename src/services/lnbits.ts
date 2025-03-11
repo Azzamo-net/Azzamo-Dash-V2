@@ -32,7 +32,7 @@ export const createInvoice = async (params: CreateInvoiceParams): Promise<Create
       memo: params.memo,
       webhook: params.webhook,
       expiry: params.expiry || 3600,
-      unit: params.unit || 'sats',
+      unit: params.unit || 'sat',
       internal: params.internal || false,
     }),
   });
