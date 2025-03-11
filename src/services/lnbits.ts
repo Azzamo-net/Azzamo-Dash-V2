@@ -6,37 +6,21 @@ interface CreateInvoiceParams {
   webhook: string;
   extra?: Record<string, any>;
   expiry?: number;
+  unit?: string;
+  internal?: boolean;
 }
 
 interface CreateInvoiceResponse {
   payment_hash: string;
   payment_request: string;
-  checking_id: string;
-  expiry: number;
 }
 
 interface PaymentStatus {
   paid: boolean;
-  preimage?: string;
-  details?: {
-    checking_id: string;
-    pending: boolean;
-    amount: number;
-    fee: number;
-    memo: string;
-    time: number;
-    bolt11: string;
-    preimage: string;
-    payment_hash: string;
-    extra: Record<string, any>;
-    webhook?: string;
-    webhook_status?: number;
-    expiry?: number;
-  };
 }
 
 export const createInvoice = async (params: CreateInvoiceParams): Promise<CreateInvoiceResponse> => {
-  const response = await fetch(`${env.lnbits.url}/api/v1/invoices`, {
+  const response = await fetch(`${env.lnbits.url}/api/v1/payments`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -47,8 +31,9 @@ export const createInvoice = async (params: CreateInvoiceParams): Promise<Create
       amount: params.amount,
       memo: params.memo,
       webhook: params.webhook,
-      extra: params.extra,
-      expiry: params.expiry || 3600, // Default 1 hour expiry
+      expiry: params.expiry || 3600,
+      unit: params.unit || 'sats',
+      internal: params.internal || false,
     }),
   });
 
